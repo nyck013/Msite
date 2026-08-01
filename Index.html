@@ -1,0 +1,1236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <meta name="theme-color" content="#1c2230">
+
+  <title>Diário de Progresso</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,600&family=Inter:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --ink: #1c2230;
+      --ink-soft: #2a3244;
+      --cream: #f2ede2;
+      --cream-dim: #b9b3a4;
+      --sage: #8aa889;
+      --ember: #d98a6b;
+      --line: rgba(242, 237, 226, 0.1);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--ink);
+      color: var(--cream);
+      font-family: "Inter", sans-serif;
+      min-height: 100vh;
+      padding: 32px 18px 60px;
+      display: flex;
+      justify-content: center;
+    }
+
+    button,
+    textarea {
+      font: inherit;
+    }
+
+    .wrap {
+      width: 100%;
+      max-width: 480px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 28px;
+    }
+
+    .eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--sage);
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-family: "Fraunces", serif;
+      font-weight: 500;
+      font-size: 30px;
+      letter-spacing: -0.01em;
+    }
+
+    .privacy-note {
+      max-width: 390px;
+      margin: 10px auto 0;
+      color: var(--cream-dim);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .streak-block {
+      text-align: center;
+      margin: 30px 0 26px;
+    }
+
+    .streak-number {
+      font-family: "Fraunces", serif;
+      font-weight: 300;
+      font-size: 76px;
+      line-height: 1;
+    }
+
+    .streak-label {
+      font-size: 13px;
+      color: var(--cream-dim);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    .constellation {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+      flex-wrap: wrap;
+      margin: 24px 0 8px;
+      padding: 0 4px;
+    }
+
+    .dot {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      background: var(--ink-soft);
+      border: 1px solid var(--line);
+      transition:
+        background 0.25s ease,
+        box-shadow 0.25s ease,
+        transform 0.25s ease;
+    }
+
+    .dot.today {
+      outline: 1px solid rgba(242, 237, 226, 0.55);
+      outline-offset: 3px;
+    }
+
+    .dot.lit-clean {
+      background: var(--sage);
+      box-shadow: 0 0 8px rgba(138, 168, 137, 0.55);
+    }
+
+    .dot.lit-slip {
+      background: var(--ember);
+      box-shadow: 0 0 8px rgba(217, 138, 107, 0.5);
+    }
+
+    .legend {
+      display: flex;
+      justify-content: center;
+      gap: 18px;
+      font-size: 11px;
+      color: var(--cream-dim);
+      margin-bottom: 34px;
+    }
+
+    .legend span {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .swatch {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+
+    .swatch.sage {
+      background: var(--sage);
+    }
+
+    .swatch.ember {
+      background: var(--ember);
+    }
+
+    .card {
+      background: var(--ink-soft);
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 22px;
+      margin-bottom: 16px;
+    }
+
+    .card h2 {
+      font-family: "Fraunces", serif;
+      font-weight: 500;
+      font-size: 17px;
+      margin-bottom: 14px;
+    }
+
+    .today-date {
+      color: var(--cream-dim);
+      font-size: 12px;
+      margin: -8px 0 16px;
+    }
+
+    .instructions {
+      font-size: 13px;
+      color: var(--cream-dim);
+      margin-bottom: 14px;
+      line-height: 1.5;
+    }
+
+    .row-label {
+      font-size: 13px;
+      color: var(--cream-dim);
+      margin-bottom: 8px;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+    }
+
+    .choice-btn {
+      flex: 1;
+      min-height: 44px;
+      padding: 11px 6px;
+      border-radius: 10px;
+      border: 1px solid var(--line);
+      background: transparent;
+      color: var(--cream);
+      font-size: 13px;
+      cursor: pointer;
+
+      transition:
+        transform 0.2s ease,
+        background 0.2s ease,
+        border-color 0.2s ease;
+    }
+
+    .choice-btn:hover {
+      border-color: rgba(242, 237, 226, 0.28);
+    }
+
+    .choice-btn:active {
+      transform: scale(0.97);
+    }
+
+    .choice-btn.selected-clean {
+      background: var(--sage);
+      border-color: var(--sage);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    .choice-btn.selected-slip {
+      background: var(--ember);
+      border-color: var(--ember);
+      color: var(--ink);
+      font-weight: 600;
+    }
+
+    textarea {
+      width: 100%;
+      background: var(--ink);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: var(--cream);
+      font-size: 13px;
+      line-height: 1.5;
+      padding: 12px;
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    textarea::placeholder {
+      color: var(--cream-dim);
+    }
+
+    .choice-btn:focus-visible,
+    .save-btn:focus-visible,
+    textarea:focus-visible {
+      outline: 2px solid var(--cream);
+      outline-offset: 2px;
+    }
+
+    .save-btn {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 16px;
+      padding: 14px;
+      border-radius: 10px;
+      border: none;
+      background: var(--sage);
+      color: var(--ink);
+      font-weight: 600;
+      font-size: 14px;
+      cursor: pointer;
+    }
+
+    .save-btn:active {
+      transform: scale(0.98);
+    }
+
+    .save-btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .status {
+      text-align: center;
+      font-size: 12px;
+      color: var(--cream-dim);
+      margin-top: 10px;
+      min-height: 18px;
+      line-height: 1.45;
+    }
+
+    .status.success {
+      color: var(--sage);
+    }
+
+    .status.error {
+      color: var(--ember);
+    }
+
+    .history {
+      margin-top: 20px;
+    }
+
+    .history h2 {
+      font-family: "Fraunces", serif;
+      font-size: 16px;
+      margin-bottom: 12px;
+      font-weight: 500;
+    }
+
+    .entry {
+      display: flex;
+      gap: 10px;
+      padding: 10px 0;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+    }
+
+    .entry:last-child {
+      border-bottom: none;
+    }
+
+    .entry-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      margin-top: 5px;
+      flex-shrink: 0;
+    }
+
+    .entry-date {
+      color: var(--cream-dim);
+      width: 64px;
+      flex-shrink: 0;
+    }
+
+    .entry-note {
+      color: var(--cream);
+      opacity: 0.85;
+      line-height: 1.45;
+      overflow-wrap: anywhere;
+    }
+
+    .empty-note {
+      color: var(--cream-dim);
+      font-size: 13px;
+      text-align: center;
+      padding: 10px 0;
+    }
+
+    @media (max-width: 380px) {
+      body {
+        padding-inline: 12px;
+      }
+
+      .card {
+        padding: 18px;
+      }
+
+      .choice-btn {
+        font-size: 12px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+
+    <header>
+      <div class="eyebrow">Diário privado</div>
+
+      <h1>Um dia de cada vez</h1>
+
+      <p class="privacy-note">
+        Os registros ficam salvos neste navegador e neste dispositivo.
+      </p>
+    </header>
+
+    <main>
+
+      <section
+        class="streak-block"
+        aria-label="Sequência atual"
+      >
+        <div
+          class="streak-number"
+          id="streakNum"
+        >
+          0
+        </div>
+
+        <div class="streak-label">
+          dias seguidos sem
+        </div>
+      </section>
+
+      <div
+        class="constellation"
+        id="constellation"
+        aria-label="Registros dos últimos 21 dias"
+      ></div>
+
+      <div
+        class="legend"
+        aria-hidden="true"
+      >
+        <span>
+          <i class="swatch sage"></i>
+          dia limpo
+        </span>
+
+        <span>
+          <i class="swatch ember"></i>
+          recaída
+        </span>
+      </div>
+
+      <section class="card">
+
+        <h2>Como foi hoje?</h2>
+
+        <div
+          class="today-date"
+          id="todayDate"
+        ></div>
+
+        <div class="instructions">
+          Escolha um resultado e uma intensidade. Depois clique em
+          “Marcar dia de hoje”.
+        </div>
+
+        <div class="row-label">
+          Resultado
+        </div>
+
+        <div
+          class="btn-row"
+          id="resultRow"
+        >
+          <button
+            type="button"
+            class="choice-btn"
+            data-val="clean"
+            aria-pressed="false"
+          >
+            Fiquei limpo
+          </button>
+
+          <button
+            type="button"
+            class="choice-btn"
+            data-val="slip"
+            aria-pressed="false"
+          >
+            Tive recaída
+          </button>
+        </div>
+
+        <div class="row-label">
+          Intensidade do impulso
+        </div>
+
+        <div
+          class="btn-row"
+          id="urgeRow"
+        >
+          <button
+            type="button"
+            class="choice-btn"
+            data-val="baixo"
+            aria-pressed="false"
+          >
+            Baixo
+          </button>
+
+          <button
+            type="button"
+            class="choice-btn"
+            data-val="medio"
+            aria-pressed="false"
+          >
+            Médio
+          </button>
+
+          <button
+            type="button"
+            class="choice-btn"
+            data-val="alto"
+            aria-pressed="false"
+          >
+            Alto
+          </button>
+        </div>
+
+        <label
+          class="row-label"
+          for="note"
+        >
+          Uma nota rápida (opcional)
+        </label>
+
+        <textarea
+          id="note"
+          maxlength="500"
+          placeholder="O que ajudou, o que foi gatilho, como está o ânimo..."
+        ></textarea>
+
+        <button
+          type="button"
+          class="save-btn"
+          id="saveBtn"
+          disabled
+        >
+          Escolha o resultado e a intensidade
+        </button>
+
+        <div
+          class="status"
+          id="status"
+          role="status"
+          aria-live="polite"
+        ></div>
+
+      </section>
+
+      <section class="card history">
+
+        <h2>Últimos dias</h2>
+
+        <div id="historyList"></div>
+
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    "use strict";
+
+    const STORAGE_KEY = "diario-progresso-v2";
+
+    let entries = {};
+    let selectedResult = null;
+    let selectedUrge = null;
+
+    const streakNum =
+      document.getElementById("streakNum");
+
+    const constellation =
+      document.getElementById("constellation");
+
+    const historyList =
+      document.getElementById("historyList");
+
+    const noteInput =
+      document.getElementById("note");
+
+    const statusElement =
+      document.getElementById("status");
+
+    const saveButton =
+      document.getElementById("saveBtn");
+
+    const todayDateElement =
+      document.getElementById("todayDate");
+
+    const resultButtons = [
+      ...document.querySelectorAll(
+        "#resultRow .choice-btn"
+      )
+    ];
+
+    const urgeButtons = [
+      ...document.querySelectorAll(
+        "#urgeRow .choice-btn"
+      )
+    ];
+
+    /*
+     * Retorna a data no horário local.
+     * Isso evita marcar o dia anterior.
+     */
+    function localDateKey(date = new Date()) {
+      const year = date.getFullYear();
+
+      const month = String(
+        date.getMonth() + 1
+      ).padStart(2, "0");
+
+      const day = String(
+        date.getDate()
+      ).padStart(2, "0");
+
+      return `${year}-${month}-${day}`;
+    }
+
+    function dateFromKey(key) {
+      const [year, month, day] =
+        key.split("-").map(Number);
+
+      return new Date(
+        year,
+        month - 1,
+        day,
+        12,
+        0,
+        0
+      );
+    }
+
+    function formatDateShort(key) {
+      return dateFromKey(key)
+        .toLocaleDateString(
+          "pt-BR",
+          {
+            day: "2-digit",
+            month: "2-digit"
+          }
+        );
+    }
+
+    function formatDateLong(key) {
+      return dateFromKey(key)
+        .toLocaleDateString(
+          "pt-BR",
+          {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+          }
+        );
+    }
+
+    function setStatus(
+      message,
+      type = ""
+    ) {
+      statusElement.textContent = message;
+
+      statusElement.className =
+        "status" +
+        (type ? ` ${type}` : "");
+    }
+
+    function normalizeEntries(value) {
+      if (
+        !value ||
+        typeof value !== "object" ||
+        Array.isArray(value)
+      ) {
+        return {};
+      }
+
+      const normalized = {};
+
+      for (
+        const [key, entry]
+        of Object.entries(value)
+      ) {
+        if (
+          !/^\d{4}-\d{2}-\d{2}$/.test(key)
+        ) {
+          continue;
+        }
+
+        if (
+          !entry ||
+          !["clean", "slip"]
+            .includes(entry.result)
+        ) {
+          continue;
+        }
+
+        normalized[key] = {
+          result: entry.result,
+
+          urge:
+            ["baixo", "medio", "alto"]
+              .includes(entry.urge)
+              ? entry.urge
+              : null,
+
+          note:
+            typeof entry.note === "string"
+              ? entry.note.slice(0, 500)
+              : "",
+
+          savedAt:
+            typeof entry.savedAt === "string"
+              ? entry.savedAt
+              : new Date().toISOString()
+        };
+      }
+
+      return normalized;
+    }
+
+    function storageAvailable() {
+      try {
+        const testKey =
+          "__diario_storage_test__";
+
+        localStorage.setItem(
+          testKey,
+          "funcionando"
+        );
+
+        localStorage.removeItem(testKey);
+
+        return true;
+      } catch (error) {
+        return false;
+      }
+    }
+
+    function loadEntries() {
+      if (!storageAvailable()) {
+        entries = {};
+
+        setStatus(
+          "O navegador bloqueou o armazenamento. Abra o site em uma aba normal.",
+          "error"
+        );
+
+        render();
+        return;
+      }
+
+      try {
+        const saved =
+          localStorage.getItem(STORAGE_KEY);
+
+        if (!saved) {
+          entries = {};
+        } else {
+          entries = normalizeEntries(
+            JSON.parse(saved)
+          );
+        }
+      } catch (error) {
+        console.error(
+          "Erro ao carregar:",
+          error
+        );
+
+        entries = {};
+
+        setStatus(
+          "Não foi possível carregar os registros.",
+          "error"
+        );
+      }
+
+      render();
+    }
+
+    function saveEntriesToStorage() {
+      localStorage.setItem(
+        STORAGE_KEY,
+        JSON.stringify(entries)
+      );
+    }
+
+    function saveEntry() {
+      if (
+        !selectedResult ||
+        !selectedUrge
+      ) {
+        setStatus(
+          "Escolha um resultado e uma intensidade.",
+          "error"
+        );
+
+        updateSaveButton();
+        return;
+      }
+
+      if (!storageAvailable()) {
+        setStatus(
+          "O navegador bloqueou o armazenamento.",
+          "error"
+        );
+
+        return;
+      }
+
+      const key = localDateKey();
+
+      const previousEntry =
+        entries[key];
+
+      entries[key] = {
+        result: selectedResult,
+        urge: selectedUrge,
+        note: noteInput.value.trim(),
+        savedAt:
+          new Date().toISOString()
+      };
+
+      saveButton.disabled = true;
+
+      setStatus("Salvando...");
+
+      try {
+        saveEntriesToStorage();
+
+        render();
+
+        const resultText =
+          selectedResult === "clean"
+            ? "dia limpo"
+            : "recaída";
+
+        setStatus(
+          `${formatDateShort(key)} marcado como ${resultText}.`,
+          "success"
+        );
+      } catch (error) {
+        console.error(
+          "Erro ao salvar:",
+          error
+        );
+
+        if (previousEntry) {
+          entries[key] = previousEntry;
+        } else {
+          delete entries[key];
+        }
+
+        render();
+
+        setStatus(
+          "Não foi possível marcar o dia.",
+          "error"
+        );
+      }
+
+      updateSaveButton();
+    }
+
+    function computeStreak() {
+      let streak = 0;
+
+      const cursor = new Date();
+
+      /*
+       * Caso hoje ainda não esteja marcado,
+       * mostra a sequência acumulada até ontem.
+       */
+      if (
+        !entries[localDateKey(cursor)]
+      ) {
+        cursor.setDate(
+          cursor.getDate() - 1
+        );
+      }
+
+      while (true) {
+        const key =
+          localDateKey(cursor);
+
+        const entry =
+          entries[key];
+
+        if (
+          entry?.result !== "clean"
+        ) {
+          break;
+        }
+
+        streak++;
+
+        cursor.setDate(
+          cursor.getDate() - 1
+        );
+      }
+
+      return streak;
+    }
+
+    function updateSaveButton() {
+      const ready =
+        Boolean(
+          selectedResult &&
+          selectedUrge
+        );
+
+      saveButton.disabled = !ready;
+
+      if (!ready) {
+        saveButton.textContent =
+          "Escolha o resultado e a intensidade";
+
+        return;
+      }
+
+      const alreadySavedToday =
+        Boolean(
+          entries[localDateKey()]
+        );
+
+      saveButton.textContent =
+        alreadySavedToday
+          ? "Atualizar dia de hoje"
+          : "Marcar dia de hoje";
+    }
+
+    function updateButtonStates() {
+      resultButtons.forEach(
+        button => {
+          const selected =
+            button.dataset.val ===
+            selectedResult;
+
+          button.classList.remove(
+            "selected-clean",
+            "selected-slip"
+          );
+
+          button.setAttribute(
+            "aria-pressed",
+            String(selected)
+          );
+
+          if (selected) {
+            button.classList.add(
+              selectedResult === "clean"
+                ? "selected-clean"
+                : "selected-slip"
+            );
+          }
+        }
+      );
+
+      urgeButtons.forEach(
+        button => {
+          const selected =
+            button.dataset.val ===
+            selectedUrge;
+
+          button.classList.toggle(
+            "selected-clean",
+            selected
+          );
+
+          button.setAttribute(
+            "aria-pressed",
+            String(selected)
+          );
+        }
+      );
+
+      updateSaveButton();
+    }
+
+    function renderConstellation() {
+      constellation.replaceChildren();
+
+      const today = new Date();
+
+      const currentTodayKey =
+        localDateKey(today);
+
+      for (
+        let daysAgo = 20;
+        daysAgo >= 0;
+        daysAgo--
+      ) {
+        const date = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          today.getDate() - daysAgo,
+          12,
+          0,
+          0
+        );
+
+        const key =
+          localDateKey(date);
+
+        const entry =
+          entries[key];
+
+        const dot =
+          document.createElement("div");
+
+        dot.className = "dot";
+
+        if (
+          key === currentTodayKey
+        ) {
+          dot.classList.add("today");
+        }
+
+        if (
+          entry?.result === "clean"
+        ) {
+          dot.classList.add(
+            "lit-clean"
+          );
+        }
+
+        if (
+          entry?.result === "slip"
+        ) {
+          dot.classList.add(
+            "lit-slip"
+          );
+        }
+
+        let resultLabel =
+          "sem registro";
+
+        if (
+          entry?.result === "clean"
+        ) {
+          resultLabel =
+            "dia limpo";
+        }
+
+        if (
+          entry?.result === "slip"
+        ) {
+          resultLabel =
+            "recaída";
+        }
+
+        dot.title =
+          `${formatDateLong(key)}: ${resultLabel}`;
+
+        dot.setAttribute(
+          "aria-label",
+          dot.title
+        );
+
+        constellation.appendChild(dot);
+      }
+    }
+
+    function renderHistory() {
+      historyList.replaceChildren();
+
+      const sortedKeys =
+        Object.keys(entries)
+          .sort()
+          .reverse()
+          .slice(0, 10);
+
+      if (
+        sortedKeys.length === 0
+      ) {
+        const empty =
+          document.createElement("div");
+
+        empty.className =
+          "empty-note";
+
+        empty.textContent =
+          "Nenhum registro ainda. Comece hoje.";
+
+        historyList.appendChild(empty);
+
+        return;
+      }
+
+      sortedKeys.forEach(
+        key => {
+          const entry =
+            entries[key];
+
+          const row =
+            document.createElement("div");
+
+          row.className =
+            "entry";
+
+          const dot =
+            document.createElement("div");
+
+          dot.className =
+            "entry-dot";
+
+          dot.style.background =
+            entry.result === "clean"
+              ? "var(--sage)"
+              : "var(--ember)";
+
+          const date =
+            document.createElement("div");
+
+          date.className =
+            "entry-date";
+
+          date.textContent =
+            formatDateShort(key);
+
+          const text =
+            document.createElement("div");
+
+          text.className =
+            "entry-note";
+
+          const parts = [
+            entry.result === "clean"
+              ? "Limpo"
+              : "Recaída"
+          ];
+
+          if (entry.urge) {
+            parts.push(
+              `impulso ${entry.urge}`
+            );
+          }
+
+          let description =
+            parts.join(" · ");
+
+          if (entry.note) {
+            description +=
+              ` — ${entry.note}`;
+          }
+
+          text.textContent =
+            description;
+
+          row.append(
+            dot,
+            date,
+            text
+          );
+
+          historyList.appendChild(row);
+        }
+      );
+    }
+
+    function restoreTodayForm() {
+      const todayEntry =
+        entries[localDateKey()];
+
+      if (!todayEntry) {
+        selectedResult = null;
+        selectedUrge = null;
+        noteInput.value = "";
+
+        updateButtonStates();
+
+        return;
+      }
+
+      selectedResult =
+        todayEntry.result;
+
+      selectedUrge =
+        todayEntry.urge;
+
+      noteInput.value =
+        todayEntry.note || "";
+
+      updateButtonStates();
+    }
+
+    function render() {
+      streakNum.textContent =
+        String(computeStreak());
+
+      todayDateElement.textContent =
+        `Hoje, ${formatDateLong(localDateKey())}`;
+
+      renderConstellation();
+      renderHistory();
+      restoreTodayForm();
+    }
+
+    resultButtons.forEach(
+      button => {
+        button.addEventListener(
+          "click",
+          () => {
+            selectedResult =
+              button.dataset.val;
+
+            updateButtonStates();
+            setStatus("");
+          }
+        );
+      }
+    );
+
+    urgeButtons.forEach(
+      button => {
+        button.addEventListener(
+          "click",
+          () => {
+            selectedUrge =
+              button.dataset.val;
+
+            updateButtonStates();
+            setStatus("");
+          }
+        );
+      }
+    );
+
+    saveButton.addEventListener(
+      "click",
+      saveEntry
+    );
+
+    loadEntries();
+  </script>
+</body>
+</html>
